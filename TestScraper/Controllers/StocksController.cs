@@ -8,8 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using TestScraper.Data;
 using TestScraper.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
 
 namespace TestScraper.Controllers
 {
@@ -67,16 +65,16 @@ namespace TestScraper.Controllers
             {
                 Scraper myScraper = new Scraper();
 
-                List<Stock> stockItems = myScraper.Scrape();
+                List<Stock> stockLists = myScraper.Scrape();
 
-                foreach(var stockItem in stockItems)
+                foreach(var stockList in stockLists)
                 {
-                    _context.Add(stockItem);
+                    _context.Add(stockList);
                     await _context.SaveChangesAsync();
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View();
+            return View(stock);
         }
 
         // GET: Stocks/Edit/5

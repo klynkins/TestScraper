@@ -10,7 +10,7 @@ namespace TestScraper.Models
     {
         public int ID { get; set; }
         public string Symbol { get; set; }
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         //public DateTime MarketTime { get; set; }
     }
 }

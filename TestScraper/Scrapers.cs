@@ -1,10 +1,10 @@
-﻿using OpenQA.Selenium;
+﻿using TestScraper.Models;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TestScraper.Models;
 
 namespace TestScraper
 {
@@ -12,7 +12,10 @@ namespace TestScraper
     {
         public List<Stock> Scrape()
         {
-            IWebDriver driver = new FirefoxDriver();
+            FirefoxDriverService service = FirefoxDriverService.CreateDefaultService(@"C:\Users\klync\Downloads\geckodriver-v0.23.0-win32");
+            service.FirefoxBinaryPath = @"C:\Program Files\Mozilla Firefox\firefox.exe";
+
+            IWebDriver driver = new FirefoxDriver(service);
             driver.Url = "https://login.yahoo.com/?.src=finance&.intl=us&authMechanism=primary&done=https%3A%2F%2Ffinance.yahoo.com%2Fscreener%2Fpredefined&eid=100&add=1";
 
             driver.Manage().Window.Maximize();
@@ -33,7 +36,7 @@ namespace TestScraper
             {
                 Stock stock = new Stock();
                 stock.Symbol = symbol[i].Text;
-                
+
                 stockList.Add(stock);
             }
 

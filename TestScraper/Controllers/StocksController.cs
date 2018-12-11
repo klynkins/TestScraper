@@ -63,9 +63,9 @@ namespace TestScraper.Controllers
         {
             if (ModelState.IsValid)
             {
-                Scraper myScraper = new Scraper();
+                Scraper newScraper = new Scraper();
 
-                List<Stock> stockLists = myScraper.Scrape();
+                List<Stock> stockLists = newScraper.Scrape();
 
                 foreach(var stockList in stockLists)
                 {

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using TestScraper.Data;
 using TestScraper.Models;
 using Microsoft.AspNetCore.Authorization;
+using TestScraper.Services;
 
 namespace TestScraper.Controllers
 {
@@ -74,7 +75,7 @@ namespace TestScraper.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(stock);
+            return View();
         }
 
         // GET: Stocks/Edit/5

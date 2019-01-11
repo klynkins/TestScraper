@@ -4,7 +4,6 @@ using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace TestScraper.Services
@@ -13,38 +12,46 @@ namespace TestScraper.Services
     {
         public List<Stock> Scrape()
         {
-            // Create a driver instance for chromedriver
-            IWebDriver driver = new ChromeDriver(@"C:\Users\klync\Source\Repos\TestScraper");
+            var chromeDriver = new ChromeDriver("C:\\Users\\klync\\Source\\Repos\\TestScraper");
 
-            //Navigate to google page
-            driver.Navigate().GoToUrl("https://login.yahoo.com/?.src=finance&.intl=us&authMechanism=primary&done=https%3A%2F%2Ffinance.yahoo.com%2Fscreener%2Fpredefined&eid=100&add=1");
+            chromeDriver.Navigate().GoToUrl("https://login.yahoo.com");
+            chromeDriver.Manage().Window.Maximize();
 
-            //Maximize the window
-            driver.Manage().Window.Maximize();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(8);
+            chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
-            driver.FindElement(By.Id("login-username")).SendKeys("" + Keys.Enter);
-            driver.FindElement(By.Id("login-passwd")).SendKeys("" + Keys.Enter);
+            /*
+            // Input username and click on Next 
+            chromeDriver.FindElementById("login-username").SendKeys("klyncamp23@gmail.com");
+            chromeDriver.FindElementById("login-signin").Click();
 
-            driver.FindElement(By.XPath("//a[contains(text(), 'My Portfolio')]")).Click();
-            driver.FindElement(By.XPath("//tr[@data-key='p_0']//td[1]")).Click();
+            // Input password and click on submit
+            chromeDriver.FindElementById("login-passwd").SendKeys("1806Rocksteadyz");
+            chromeDriver.FindElementById("login-signin").Click();
+            */
 
-            //Find the Search text box using xpath
-            IList<IWebElement> symbol = driver.FindElements(By.ClassName("_61PYt"));
+            chromeDriver.FindElement(By.Id("login-username")).SendKeys("klyncamp23@gmail.com" + Keys.Enter);
+            chromeDriver.FindElement(By.Id("login-passwd")).SendKeys("1806Rocksteadyz" + Keys.Enter);
+
+            chromeDriver.Url = "https://finance.yahoo.com/portfolio/p_0/view/v1";
+
+            var closePopup = chromeDriver.FindElementByXPath("//dialog[@id = '__dialog']/section/button");
+            closePopup.Click();
+
+            IWebElement list = chromeDriver.FindElementByTagName("tbody");
+            System.Collections.ObjectModel.ReadOnlyCollection<IWebElement> stocks = list.FindElements(By.TagName("tr"));
+            int count = stocks.Count();
 
             List<Stock> stockList = new List<Stock>();
-
-            for (int i = 0; i < symbol.Count; i++)
+            for (int i = 1; i <= count; i++)
             {
-                Stock stock = new Stock
-                {
-                    Symbol = symbol[i].Text
-                };
+                var symbol = chromeDriver.FindElementByXPath("//*[@id=\"main\"]/section/section[2]/div[2]/table/tbody/tr[" + i + "]/td[1]/span/a").GetAttribute("innerText");
+                
+                Stock stock = new Stock();
+                stock.Symbol = symbol;
+                Console.WriteLine(stock);
                 stockList.Add(stock);
+                
             }
-
-            //Close the browser
-            driver.Close();
             return stockList;
         }
     }

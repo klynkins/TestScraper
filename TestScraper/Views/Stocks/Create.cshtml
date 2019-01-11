@@ -1,27 +1,19 @@
 ﻿@model TestScraper.Models.Stock
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Stocks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h2>Click on the Scrape button to view Stocks!</h2>
 
-<h4>Stock</h4>
+<button type="button" class="btn btn-success">@Html.ActionLink("Stocks", "Create")</button>
+
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Symbol" class="control-label"></label>
-                <input asp-for="Symbol" class="form-control" />
-                <span asp-validation-for="Symbol" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+<div>
+    <form asp-action="Create">
+        <input type="submit" value="Scrape" class="btn btn-default" />
+    </form>
 </div>
 
 <div>

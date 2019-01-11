@@ -28,6 +28,13 @@ namespace TestScraper.Controllers
             return View(await _context.Stock.ToListAsync());
         }
 
+        // GET: Stocks/History
+        [Authorize]
+        public async Task<IActionResult> History()
+        {
+            return View(await _context.Stock.ToListAsync());
+        }
+
         // GET: Stocks/Details/5
         [Authorize]
         public async Task<IActionResult> Details(int? id)
@@ -38,7 +45,7 @@ namespace TestScraper.Controllers
             }
 
             var stock = await _context.Stock
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .SingleOrDefaultAsync(m => m.ID == id);
             if (stock == null)
             {
                 return NotFound();
@@ -62,15 +69,23 @@ namespace TestScraper.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Symbol")] Stock stock)
         {
+            //if (ModelState.IsValid)
+            //{
+            //    _context.Add(stock);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //return View(stock);
+
             if (ModelState.IsValid)
             {
                 Scraper newScraper = new Scraper();
 
-                List<Stock> stockLists = newScraper.Scrape();
-
-                foreach(var stockList in stockLists)
+                List<Stock> stockItems = newScraper.Scrape();
+                foreach (var stockItem in stockItems)
                 {
-                    _context.Add(stockList);
+                    //stockItem.MarketTime = DateTime.Now;
+                    _context.Add(stockItem);
                     await _context.SaveChangesAsync();
                 }
                 return RedirectToAction(nameof(Index));
@@ -87,7 +102,7 @@ namespace TestScraper.Controllers
                 return NotFound();
             }
 
-            var stock = await _context.Stock.FindAsync(id);
+            var stock = await _context.Stock.SingleOrDefaultAsync(m => m.ID == id);
             if (stock == null)
             {
                 return NotFound();
@@ -141,7 +156,7 @@ namespace TestScraper.Controllers
             }
 
             var stock = await _context.Stock
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .SingleOrDefaultAsync(m => m.ID == id);
             if (stock == null)
             {
                 return NotFound();
@@ -156,7 +171,7 @@ namespace TestScraper.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var stock = await _context.Stock.FindAsync(id);
+            var stock = await _context.Stock.SingleOrDefaultAsync(m => m.ID == id);
             _context.Stock.Remove(stock);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

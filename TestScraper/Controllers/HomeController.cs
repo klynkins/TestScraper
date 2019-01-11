@@ -15,12 +15,20 @@ namespace TestScraper.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult About()
         {
+            ViewData["Message"] = "Yahoo Finance Scraper";
+
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Contact()
+        {
+            ViewData["Message"] = "My Contact Info";
+
+            return View();
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

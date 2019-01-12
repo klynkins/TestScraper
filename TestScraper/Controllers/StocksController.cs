@@ -83,8 +83,7 @@ namespace TestScraper.Controllers
 
                 List<Stock> stockItems = newScraper.Scrape();
                 foreach (var stockItem in stockItems)
-                {
-                    //stockItem.MarketTime = DateTime.Now;
+                { 
                     _context.Add(stockItem);
                     await _context.SaveChangesAsync();
                 }

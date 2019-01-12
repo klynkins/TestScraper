@@ -19,21 +19,13 @@ namespace TestScraper.Services
 
             chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
-            /*
-            // Input username and click on Next 
-            chromeDriver.FindElementById("login-username").SendKeys("klyncamp23@gmail.com");
-            chromeDriver.FindElementById("login-signin").Click();
+            chromeDriver.FindElement(By.Id("login-username")).SendKeys("" + Keys.Enter);
+            chromeDriver.FindElement(By.Id("login-passwd")).SendKeys("" + Keys.Enter);
 
-            // Input password and click on submit
-            chromeDriver.FindElementById("login-passwd").SendKeys("1806Rocksteadyz");
-            chromeDriver.FindElementById("login-signin").Click();
-            */
-
-            chromeDriver.FindElement(By.Id("login-username")).SendKeys("klyncamp23@gmail.com" + Keys.Enter);
-            chromeDriver.FindElement(By.Id("login-passwd")).SendKeys("1806Rocksteadyz" + Keys.Enter);
-
+            // navigate to my portfolio page
             chromeDriver.Url = "https://finance.yahoo.com/portfolio/p_0/view/v1";
 
+            // close pop-up alert
             var closePopup = chromeDriver.FindElementByXPath("//dialog[@id = '__dialog']/section/button");
             closePopup.Click();
 
